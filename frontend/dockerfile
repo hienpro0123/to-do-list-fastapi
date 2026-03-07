@@ -1,0 +1,21 @@
+FROM node:20
+
+WORKDIR /app
+
+# Copy package.json
+COPY package*.json ./
+
+# Cài dependency
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Build NextJS
+RUN npm run build
+
+# Mở port
+EXPOSE 3000
+
+# Start app
+CMD ["npm", "run", "start"]
