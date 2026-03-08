@@ -7,11 +7,13 @@ def create_todo(session: Session, todo: Todo):
     session.refresh(todo)
     return todo
 
-def get_all_todos(session: Session):
-    return session.exec(select(Todo)).all()
+def get_all_todos_by_user(session: Session, user_id: int):
+    return session.exec(select(Todo).where(Todo.user_id == user_id)).all()
 
-def get_todo_by_id(session: Session, id: int):
-    return session.exec(select(Todo).where(Todo.id == id)).first()
+def get_todo_by_id_and_user(session: Session, id: int, user_id: int):
+    return session.exec(
+        select(Todo).where(Todo.id == id, Todo.user_id == user_id)
+    ).first()
 
 def delete_todo(session: Session, todo: Todo):
     session.delete(todo)

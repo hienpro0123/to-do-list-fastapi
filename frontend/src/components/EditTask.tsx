@@ -1,52 +1,74 @@
-'use client'
-import { edit_todo } from "@/actions/actions";
+"use client";
 import { Todo } from "../../types";
-import { useFormState } from "react-dom";
 import SubmitButton from "./SubmitButton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useState } from "react";
 
+export default function EditTask({ task }: { task: Todo }) {
+  const [value, setValue] = useState(task.content);
+  const [loading, setLoading] = useState(false);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
 
-export default function EditTask({task}:{task:Todo}) {
-  const [value,setValue] = useState(task.content)
-  const [state, formAction] = useFormState(edit_todo, {status:" ", message:""})
-  const {status, message} = state;
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
 
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Not authenticated");
+        return;
+      }
 
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value)
-  }
+      const response = await fetch(
+        `http://localhost:8000/todos/${task.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            content: value,
+            is_completed: task.is_completed,
+          }),
+        }
+      );
 
-  const handleSubmit = (formData:FormData) => {
-    const id:number = task.id
-    const content:string = formData.get('edit_task') as string
-    const is_completed:boolean = task.is_completed
-    formAction({id,content,is_completed})
-  } 
-  
-  useEffect(()=>{
-    if(status == 'success'){
-      toast.success(message)
-    } else if (status == 'error'){ 
-      toast.error(message)
+      const data = await response.json();
+      if (response.ok && data.content) {
+        toast.success("Todo edited successfully");
+        window.location.reload();
+      } else {
+        toast.error(data.detail || "Not found");
+      }
+    } catch (error) {
+      toast.error("Network error");
+    } finally {
+      setLoading(false);
     }
-  },[state])
+  };
 
-    return (
-      <form action={handleSubmit} className="flex flex-col justify-between items-center gap-x-4 w-full">
-        <input
-          onChange={handleChange}
-          type="text"
-          minLength={3}
-          maxLength={54}
-          required
-          name="edit_task"
-          value={value}
-          className="w-full px-2 py-1 border border-gray-100 rounded-md"
-        />
-        <SubmitButton />
-      </form>
-    );
-  }
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col justify-between items-center gap-x-4 w-full"
+    >
+      <input
+        onChange={handleChange}
+        type="text"
+        minLength={3}
+        maxLength={54}
+        required
+        name="edit_task"
+        value={value}
+        className="w-full px-2 py-1 border border-gray-100 rounded-md"
+        disabled={loading}
+      />
+      <SubmitButton disabled={loading} />
+    </form>
+  );
+}

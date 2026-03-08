@@ -1,6 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+
+// helper to get token from cookie (or undefined)
+function getToken() {
+  const c = cookies().get("token");
+  return c ? c.value : undefined;
+}
 
 // add_todo
 
@@ -13,11 +20,13 @@ export async function add_todo(
   //TODO add validation through Zod or Yup
 
   try {
+    const headers: any = { "Content-Type": "application/json" };
+    const token = getToken();
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
     const response = await fetch("http://localhost:8000/todo/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify({ content: new_todo }),
     });
     revalidatePath("/todos");
@@ -48,11 +57,13 @@ export async function edit_todo(
   //TODO add validation through Zod or Yup
 
   try {
+    const headers: any = { "Content-Type": "application/json" };
+    const token = getToken();
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
     const response = await fetch(`http://localhost:8000/todos/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify({ content, is_completed }),
     });
     const res = await response.json();
@@ -75,11 +86,13 @@ export async function status_change(
   is_completed: boolean
 ) {
   try {
+    const headers: any = { "Content-Type": "application/json" };
+    const token = getToken();
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
     const response = await fetch(`http://localhost:8000/todos/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify({
         content: content,
         is_completed: !is_completed,
@@ -101,11 +114,12 @@ export async function status_change(
 
 export async function delete_todo(id: number) {
   try {
+    const headers: any = { "Content-Type": "application/json" };
+    const token = getToken();
+    if (token) headers["Authorization"] = `Bearer ${token}`;
     const response = await fetch(`http://localhost:8000/todos/${id}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
     });
     const res = await response.json();
     if(res.message){
