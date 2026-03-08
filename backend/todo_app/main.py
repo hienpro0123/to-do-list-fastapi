@@ -14,7 +14,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI( title="dailyDo Todo App", version="1.0.0",lifespan=lifespan)
+app = FastAPI( title="Todo List", version="1.0.0",lifespan=lifespan)
 
 #middle
 app.add_middleware(
