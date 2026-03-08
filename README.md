@@ -1,4 +1,4 @@
-# dailyDo Todo App
+# Todo App List
 
 A full-stack todo application built with FastAPI and Next.js, featuring user authentication and task management.
 
