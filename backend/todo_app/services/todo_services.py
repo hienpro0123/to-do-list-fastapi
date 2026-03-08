@@ -6,8 +6,18 @@ def create_todo_service(session: Session, todo: Todo, user_id: int):
     todo.user_id = user_id
     return todo_repository.create_todo(session, todo)
 
-def get_all_todos_service(session: Session, user_id: int):
-    return todo_repository.get_all_todos_by_user(session, user_id)
+def get_all_todos_service(
+    session: Session, 
+    user_id: int, 
+    search: str | None = None,
+    status: str | None = None
+):
+    return todo_repository.get_todos_with_filters(
+        session, 
+        user_id, 
+        search=search, 
+        status=status
+    )
 
 def get_single_todo_service(session: Session, id: int, user_id: int):
     return todo_repository.get_todo_by_id_and_user(session, id, user_id)

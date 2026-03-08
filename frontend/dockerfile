@@ -17,5 +17,5 @@ RUN npm run build
 # Mở port
 EXPOSE 3000
 
-# Start app
+# Start production server
 CMD ["npm", "run", "start"]

@@ -18,14 +18,27 @@ def create(
     return todo_services.create_todo_service(session, todo_data, current_user.id)
 
 
+#Filters
 @router.get("/", response_model=list[TodoRead])
 def get_all(
     session: Annotated[Session, Depends(get_session)],
     current_user: User = Depends(auth_services.get_current_user),
+    search: str | None = None,
+    status: str | None = None,
 ):
-    todos = todo_services.get_all_todos_service(session, current_user.id)
-    if not todos:
-        raise HTTPException(status_code=404, detail="No tasks found")
+    """
+    Get all todos with optional search and status filters.
+    
+    Query Parameters:
+    - search: Search term to filter todos by content (case-insensitive)
+    - status: Filter by status - "completed", "pending", or None for all
+    """
+    todos = todo_services.get_all_todos_service(
+        session, 
+        current_user.id, 
+        search=search, 
+        status=status
+    )
     return todos
 
 
