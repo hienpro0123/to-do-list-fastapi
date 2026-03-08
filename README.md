@@ -2,6 +2,15 @@
 
 A full-stack todo application built with FastAPI and Next.js, featuring user authentication and task management.
 
+---
+
+## Student Information
+
+- **Name:** Trịnh Quang Hiên  
+- **Student ID:** 23632591  
+
+---
+
 ## Project Overview
 
 **dailyDo** is a modern todo application that allows users to register, log in, and manage their daily tasks. The application features a RESTful API backend and a responsive Next.js frontend with a clean, user-friendly interface.
