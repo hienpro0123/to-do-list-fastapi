@@ -283,5 +283,3 @@ POST /todos/
 ```
 
 ---
-
-Built with ❤️ by Em-Aar
