@@ -1,159 +1,96 @@
+# DailyDo Todo App
 
-# 📚Daily ToDo App
+## 📌 Overview
 
-## 📌 Project Overview
-
-This project was built to demonstrate a practical full-stack workflow: authentication, CRUD operations, database integration, and frontend-backend communication in one cohesive application. The backend exposes RESTful endpoints with FastAPI, while the frontend provides a clean task dashboard for creating, updating, filtering, and deleting todos.
-This project focuses on the core pieces of a modern full-stack workflow:
-
-- 🔐 Secure user authentication with registration, login, and token-based access
-- ✅ Personal task management with create, read, update, and delete flows
-- 🔎 Search and status filtering for a better task management experience
-- 🌐 Clear frontend-backend separation with a shared local development setup
-- 📘 Built-in API documentation through FastAPI Swagger and ReDoc
-
-It is a solid GitHub portfolio example for demonstrating both backend API design and frontend application development.
+- DailyDo is a full-stack todo app built for people who want a simple way to manage personal tasks without mixing data across users.
+- The project solves two practical problems at once: storing todos in a real database and protecting each user's task list behind authentication.
+- It combines a FastAPI backend, a Next.js frontend, and PostgreSQL in one repo, so you can see the full flow from login to database-backed CRUD operations.
+- This is a good project for learning or showcasing how a frontend and API work together in a clean, separated setup.
 
 ## ✨ Key Features
 
-- JWT-based authentication with protected routes
-- Registration and login using username or email
-- Secure password hashing
-- Create, read, update, and delete todos
-- Filter tasks by keyword and completion status
-- Responsive UI for desktop and mobile
-- Built-in API documentation with Swagger UI and ReDoc
-- Docker Compose environment with PostgreSQL and pgAdmin
-- JWT-style token authentication for protected routes
-- User registration and login with username or email support
-- Password hashing for secure credential storage
-- Todo CRUD operations tied to the authenticated user
-- Task filtering by keyword and completion status
-- Responsive task dashboard with add, edit, delete, and logout flows
-- Docker Compose setup with PostgreSQL and pgAdmin
-- Automatic table creation on backend startup
+- User registration and login with JWT authentication.
+- Login accepts either a username or an email address, which makes the sign-in flow more flexible.
+- Passwords are hashed before storage instead of being saved as plain text.
+- Every todo is tied to the authenticated user, so one user cannot read or edit another user's tasks.
+- Task management includes create, list, update, and delete actions.
+- The todo list supports `search` and `status` filters, making it easier to find pending or completed work quickly.
+- The frontend includes dedicated login and register pages, a task dashboard, add/edit dialogs, and logout support.
+- FastAPI automatically exposes Swagger UI and ReDoc, which makes the API easy to inspect and test during development.
+- Docker Compose starts the frontend, backend, PostgreSQL, and pgAdmin together for a complete local environment.
 
 ## 🛠️ Tech Stack
 
-- Tailwind CSS
-- Radix UI
+- Backend: FastAPI, SQLModel, PostgreSQL, Psycopg, JWT (`python-jose`), Passlib
+- Frontend: Next.js 14, React 18, TypeScript, Tailwind CSS
+- UI helpers: Radix UI, Lucide React, React Hot Toast
+- Dev tooling: Docker, Docker Compose, pgAdmin, Pytest
 
-**Infrastructure**
-**Dev Tools**
-- Docker
-- Docker Compose
-- pgAdmin
+## 🗂️ Project Structure
 
-```text
-FASTAPI/
-|-- backend/          # FastAPI app, routers, services, database
-|-- frontend/         # Next.js app, pages, components, utilities
-|-- docker-compose.yml
-`-- README.md
-├── backend/      # FastAPI app, routers, services, schemas, database config
-├── frontend/     # Next.js app, pages, components, API helpers
-├── docker-compose.yml
-└── README.md
-```
+- `backend/` - FastAPI app with routers, services, schemas, database config, and tests
+- `frontend/` - Next.js app with pages, components, API helpers, and styling
+- `docker-compose.yml` - local multi-service setup for app containers, PostgreSQL, and pgAdmin
+- `.env` - shared environment variables for database access and the app secret key
 
 ## 🚀 Setup & Run
 
-### Option 1: Docker
-### 🐳 Docker
+- Clone the repository and move into the project folder:
 
-Create a root `.env` file:
-
-SECRET_KEY=your-super-secret-key
+```bash
+git clone <your-repo-url>
+cd FASTAPI
 ```
 
-Start the stack:
-Start the full stack:
+- Create a root `.env` file if you do not already have one:
+
+```env
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=admin
+POSTGRES_DB=todo_db
+PGADMIN_DEFAULT_EMAIL=admin@admin.com
+PGADMIN_DEFAULT_PASSWORD=admin
+DATABASE_URL=postgresql://admin:admin@localhost:5432/todo_db
+TEST_DATABASE_URL=postgresql://admin:admin@localhost:5432/test_db
+SECRET_KEY=your-secret-key
+```
+
+- Run everything with Docker:
 
 ```bash
 docker compose up --build
 ```
 
-Services:
-Available services:
+- Open the app and tools:
+  - Frontend: `http://localhost:3000`
+  - Backend API: `http://localhost:8000`
+  - Swagger docs: `http://localhost:8000/docs`
+  - ReDoc: `http://localhost:8000/redoc`
+  - pgAdmin: `http://localhost:5050`
 
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:8000`
-- Swagger Docs: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
-- pgAdmin: `http://localhost:5050`
-
-### Option 2: Local Development
-
-**Backend**
-### 💻 Local Development
-
-Create `backend/.env`:
-Backend:
-
-```env
-DATABASE_URL=postgresql://todouser:todopassword@localhost:5432/dailydo
-TEST_DATABASE_URL=postgresql://todouser:todopassword@localhost:5432/test_db
-SECRET_KEY=your-super-secret-key
-```
-
-Run:
+- Run locally without Docker if needed:
+  - Backend:
 
 ```bash
 cd backend
+pip install -r requirements.txt
 uvicorn todo_app.main:app --reload
 ```
 
-**Frontend**
-Frontend:
+  - Frontend:
 
 ```bash
 cd frontend
+npm install
+npm run dev
+```
 
-## 🔗 Main API Endpoints
+## 🔌 Main API
 
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| POST | `/auth/register` | Register a new user |
-| POST | `/auth/login` | Log in and receive a token |
-| GET | `/auth/me` | Get the current authenticated user |
-| POST | `/todos/` | Create a todo |
-| GET | `/todos/` | List todos for the current user |
-| GET | `/todos/{id}` | Get a single todo |
-| PUT | `/todos/{id}` | Update a todo |
-| DELETE | `/todos/{id}` | Delete a todo |
-| GET | `/users/` | List users |
-| GET | `/users/{id}` | Get a user by ID |
-| DELETE | `/users/{id}` | Delete a user |
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/auth/register` | Register a new user |
-| `POST` | `/auth/login` | Log in and receive an access token |
-| `GET` | `/auth/me` | Get the current authenticated user |
-| `POST` | `/todos/` | Create a new todo |
-| `GET` | `/todos/` | List the current user's todos |
-| `GET` | `/todos/{id}` | Get a single todo by ID |
-| `PUT` | `/todos/{id}` | Update a todo |
-| `DELETE` | `/todos/{id}` | Delete a todo |
-| `GET` | `/users/` | List users |
-| `GET` | `/users/{id}` | Get a user by ID |
-| `DELETE` | `/users/{id}` | Delete a user |
-
-Supported query parameters for `GET /todos/`:
-- `search` for filtering by content
-- `status` with `completed` or `pending`
-Todo list filtering supports:
-
-## ✅ Notes
-- 🔎 `search` to filter by task content
-- ✅ `status=completed`
-- ⏳ `status=pending`
-
-- CORS is configured for the local frontend
-- Database tables are created automatically on startup
-- The frontend supports separate API URLs for browser-side and server-side requests
-## 📎 Notes
-
-This repository is a solid portfolio example of a modern full-stack CRUD app with authentication, clean API structure, and containerized development.
-- CORS is configured for local frontend access
-- The frontend uses separate browser-side and server-side API base URLs
-- The repository is structured for easy local development and Docker-based demos
+- `POST /auth/register` - create a new user account
+- `POST /auth/login` - log in with username or email and receive a bearer token
+- `GET /auth/me` - return the currently authenticated user
+- `GET /todos/` - list the current user's todos, with optional `search` and `status` filters
+- `POST /todos/` - create a new todo for the logged-in user
+- `PUT /todos/{id}` - update a todo's content or completion state
+- `DELETE /todos/{id}` - remove a todo
