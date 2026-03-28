@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { apiUrl } from "../lib/api";
 
 // helper to get token from cookie (or undefined)
 function getToken() {
@@ -24,7 +25,7 @@ export async function add_todo(
     const token = getToken();
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/todo/`, {
+    const response = await fetch(apiUrl("/todo/"), {
       method: "POST",
       headers,
       body: JSON.stringify({ content: new_todo }),
@@ -61,7 +62,7 @@ export async function edit_todo(
     const token = getToken();
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/todos/${id}`, {
+    const response = await fetch(apiUrl(`/todos/${id}`), {
       method: "PUT",
       headers,
       body: JSON.stringify({ content, is_completed }),
@@ -90,7 +91,7 @@ export async function status_change(
     const token = getToken();
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/todos/${id}`, {
+    const response = await fetch(apiUrl(`/todos/${id}`), {
       method: "PUT",
       headers,
       body: JSON.stringify({
@@ -117,7 +118,7 @@ export async function delete_todo(id: number) {
     const headers: any = { "Content-Type": "application/json" };
     const token = getToken();
     if (token) headers["Authorization"] = `Bearer ${token}`;
-    const response = await fetch(`http://localhost:8000/todos/${id}`, {
+    const response = await fetch(apiUrl(`/todos/${id}`), {
       method: "DELETE",
       headers,
     });

@@ -1,8 +1,9 @@
 "use client";
 import { Todo } from "../../types";
 import SubmitButton from "./SubmitButton";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import { apiUrl } from "../lib/api";
 
 export default function EditTask({ task }: { task: Todo }) {
   const [value, setValue] = useState(task.content);
@@ -23,20 +24,17 @@ export default function EditTask({ task }: { task: Todo }) {
         return;
       }
 
-      const response = await fetch(
-        `http://localhost:8000/todos/${task.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            content: value,
-            is_completed: task.is_completed,
-          }),
-        }
-      );
+      const response = await fetch(apiUrl(`/todos/${task.id}`), {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          content: value,
+          is_completed: task.is_completed,
+        }),
+      });
 
       const data = await response.json();
       if (response.ok && data.content) {

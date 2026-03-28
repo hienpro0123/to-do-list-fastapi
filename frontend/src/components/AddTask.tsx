@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import SubmitButton from "./SubmitButton";
+import { apiUrl } from "../lib/api";
 
 export default function AddTask() {
   const ref = useRef<HTMLFormElement>(null);
@@ -22,7 +23,7 @@ export default function AddTask() {
         return;
       }
 
-      const response = await fetch("http://localhost:8000/todos/", {
+      const response = await fetch(apiUrl("/todos/"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -6,6 +6,7 @@ import ToolTip from "./ToolTip";
 import { Modal } from "./ui/Modal";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { apiUrl } from "../lib/api";
 
 export default function Task({ task }: { task: Todo }) {
   const [loading, setLoading] = useState(false);
@@ -19,20 +20,17 @@ export default function Task({ task }: { task: Todo }) {
         return;
       }
 
-      const response = await fetch(
-        `http://localhost:8000/todos/${task.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            content: task.content,
-            is_completed: !task.is_completed,
-          }),
-        }
-      );
+      const response = await fetch(apiUrl(`/todos/${task.id}`), {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          content: task.content,
+          is_completed: !task.is_completed,
+        }),
+      });
 
       const data = await response.json();
       if (response.ok && data.content) {
@@ -57,15 +55,12 @@ export default function Task({ task }: { task: Todo }) {
         return;
       }
 
-      const response = await fetch(
-        `http://localhost:8000/todos/${task.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(apiUrl(`/todos/${task.id}`), {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const data = await response.json();
       if (response.ok && data.message) {

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Todo } from "../../types";
 import Task from "./Task";
+import { apiUrl } from "../lib/api";
 
 export default function TodoTable() {
   const [todo_list, setTodoList] = useState<Todo[]>([]);
@@ -31,7 +32,7 @@ export default function TodoTable() {
           params.append("status", statusFilter);
         }
 
-        const url = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/todos/?${params.toString()}`;
+        const url = `${apiUrl("/todos/")}?${params.toString()}`;
 
         const response = await fetch(url, {
           cache: "no-store",
