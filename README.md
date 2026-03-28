@@ -1,4 +1,4 @@
-# DailyDo Todo App
+# 📖DailyDo Todo App
 
 ## 📌 Overview
 
@@ -7,17 +7,16 @@
 - It combines a FastAPI backend, a Next.js frontend, and PostgreSQL in one repo, so you can see the full flow from login to database-backed CRUD operations.
 - This is a good project for learning or showcasing how a frontend and API work together in a clean, separated setup.
 
-## ✨ Key Features
+## ⚡ Features
 
-- User registration and login with JWT authentication.
-- Login accepts either a username or an email address, which makes the sign-in flow more flexible.
-- Passwords are hashed before storage instead of being saved as plain text.
-- Every todo is tied to the authenticated user, so one user cannot read or edit another user's tasks.
-- Task management includes create, list, update, and delete actions.
-- The todo list supports `search` and `status` filters, making it easier to find pending or completed work quickly.
-- The frontend includes dedicated login and register pages, a task dashboard, add/edit dialogs, and logout support.
-- FastAPI automatically exposes Swagger UI and ReDoc, which makes the API easy to inspect and test during development.
-- Docker Compose starts the frontend, backend, PostgreSQL, and pgAdmin together for a complete local environment.
+- 🔐 JWT authentication (login via username or email)
+- 🔒 Secure password hashing
+- 📝 Full CRUD todo management
+- 🔍 Search & filter (by status/content)
+- 👤 User-specific data isolation
+- 💻 Responsive UI (login, dashboard, dialogs)
+- 📄 Built-in API docs (Swagger, ReDoc)
+- 🐳 Docker setup with PostgreSQL & pgAdmin
 
 ## 🛠️ Tech Stack
 
